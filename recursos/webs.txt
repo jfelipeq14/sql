@@ -1,0 +1,15 @@
+Tipos de datos:
+
+https://desarrolloweb.com/articulos/1054.php
+
+Practicar:
+
+https://www.hackerrank.com/domains/sql
+
+aprender:
+
+https://sqlbolt.com
+
+https://www.programiz.com/sql
+
+https://www.aulafacil.com/cursos/bases-de-datos/mysql-t848
