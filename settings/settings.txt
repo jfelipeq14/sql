@@ -1,0 +1,7 @@
+Cursor Blinking: expand
+Linked Editing: enabled
+Bracket Pair Colorization: enabled
+Bracket Pair Colorization: Independent Color Pool Per Bracket Type: enabled
+Breadcrumbs: Disabled
+Sticky Scroll: Enabled
+Cursor Smooth Caret Animation: on

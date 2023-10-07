@@ -6,5 +6,4 @@ JavaScript and TypeScript Nightly
 Live Server
 Path IntelliSense
 Python
-SQL Server (mssql)
 Template String Converter
