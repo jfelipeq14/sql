@@ -1,15 +1,111 @@
--- informacion del cliente y la ciudad donde vive
--- lo que voy a mostrar
--- SELECCIONE
--- Que voy a mostrar
+use tienda;
+-- Mostrar todos los departamentos
+select * from departamento;
+
+-- mostra nombre de la ciudad y nombre del departamento
+SELECT ciudad.nombre, departamento.nombre 
+	FROM ciudad, departamento
+		WHERE ciudad.idDepartamento = departamento.id;
+
+-- mostrar nombre de la ciudad y nombre del departamento de los municipios de antioquia
+SELECT ciudad.nombre, departamento.nombre
+	FROM CIUDAD, departamento 
+		WHERE	ciudad.idDepartamento = departamento.id and
+				departamento.nombre='antioquia';
+
+-- mostrar la factura numero 2 solo los datos que esten en la tabla.
+SELECT * 
+	FROM factura
+		WHERE factura.id = 2;
+
+-- mostrar la factura numero 2, datos del cliente completos con id de ciudad y con id de cajero que lo atendio
+SELECT * 
+	FROM factura, cliente
+		WHERE	factura.idCliente = cliente.id AND
+				factura.id = 2;
+
+-- mostrar la factura numero 5, datos del cliente completos con id de ciudad y nombre ciudad 
+-- y con id de cajero y nombre cajero que lo atendio
+SELECT * 
+	FROM factura, cliente, ciudad, cajero
+		WHERE	factura.idCliente = cliente.id AND
+				ciudad.id = cliente.idCiudad AND
+				factura.idCajero = cajero.id AND
+				factura.id = 5;
+
+-- mostrar la factura numero 4, datos del cliente, nombre de la ciudad y el departamento 
+-- y el nombre de los productos que compro con el nombre de la categoria ordenado por categoria 
+SELECT factura.*, cliente.*, ciudad.nombre, departamento.nombre, producto.nombre, categoria.nombre
+	FROM departamento, ciudad, cliente, factura, detalleFacturaProducto, producto, categoria
+		WHERE departamento.id = ciudad.idDepartamento AND
+				ciudad.id = cliente.idCiudad AND
+				cliente.id = factura.idCliente AND
+				factura.id  = detalleFacturaProducto.idFactura AND
+				detalleFacturaProducto.idProducto = producto.id AND
+				producto.idCategoria = categoria.id AND
+				factura.id=9
+				ORDER BY categoria.nombre;
+
+-- Listar el nombre del pais, del departamento, de la ciuadad y del cajero de todas las facturas
+-- ordenadas descendentemente por factura. ojo que los titulos se presenten de acuerdo a la tabla.
+SELECT	pais.nombre AS pais,
+		departamento.nombre as 'departamento',
+		ciudad.nombre as ciudad,
+		cajero.nombre as cajero, factura.id, factura.fecha
+	FROM pais, departamento, ciudad,cliente, cajero, factura
+		WHERE	pais.id = departamento.idPais AND
+				departamento.id = ciudad.idDepartamento AND
+				ciudad.id = cliente.idCiudad AND
+				cliente.id = factura.idCliente AND
+				factura.idCajero = cajero.id
+		order by  factura.id desc;
+
+-- mostrar la factura 2 completa con los productos vendidos, el cajero y el cliente
+-- que se vendieron con categoria frutas
+
+SELECT factura.*,producto.nombre,cajero.nombre,cliente.nombre,categoria.nombre
+	FROM factura,categoria,detalleFacturaProducto,producto,cajero,cliente
+		WHERE categoria.id =producto.idcategoria AND
+				producto.id = detalleFacturaProducto.idproducto AND
+				detalleFacturaProducto.idFactura = factura.id AND
+				factura.idCajero = cajero.id AND
+				factura.idCliente = cliente.id AND
+				factura.id = 2 AND
+				categoria.nombre = 'frutas';
+
+-- mostrar todas las facuras vendidas en el mes de noviembre con toda la informacion
+SELECT *
+	FROM factura
+		WHERE fecha BETWEEN '2023-11-01' AND '2023-11-30';
+
+-- mostrar los domicilios entregados por cada domiciliario
+SELECT domicilio.*, domiciliario.nombre AS Domiciliario
+	FROM domicilio, domiciliario
+		WHERE domicilio.idDomiciliario = domiciliario.id
+        ORDER BY domiciliario.nombre;
+
+-- mostrar las facturas agrupadas por cada cajero que lo atendio
+SELECT factura.*, cajero.nombre AS Cajero
+	FROM factura, cajero
+		WHERE factura.idCajero = cajero.id
+        GROUP BY cajero.nombre;
+
+-- mostrar las facturas agrupadas por cliente ordendadas por nombre del cliente
+SELECT factura.*, cliente.nombre AS Cliente
+	FROM factura, cliente
+		WHERE cliente.id = factura.idCliente
+        GROUP BY cliente
+        ORDER BY cliente.nombre ASC;
+
+-- mostrar la factura vendida con el mayor precio para darle un premio del 2% del valor de la factura
 SELECT
-    -- seleccione TODO lo del cliente
-    cliente.*,
-    ciudad.nombre -- Indicar de donde viene la informacion
-FROM
-    cliente,
-    ciudad -- Donde (que se tiene que cumplir para mostrar la informacion)
-WHERE
-    -- indicar como se relaciona una tabla con otra
-    -- la llave foranea (foreign key) con la llave primaria (primary key)
-    cliente.idCiudad = ciudad.id
+	MAX(precio) AS Precio
+	,(MAX(precio) * 0.2) AS Premio
+FROM detallefacturaproducto;
+
+-- mostrar el cajero que mas facturas atiende
+SELECT idCajero, count(idCajero) AS Total
+	FROM factura
+    GROUP BY idCajero
+    ORDER BY Total DESC
+    LIMIT 1;
