@@ -1,4 +1,5 @@
 use tienda;
+
 -- Mostrar todos los departamentos
 select * from departamento;
 
@@ -24,8 +25,7 @@ SELECT *
 		WHERE	factura.idCliente = cliente.id AND
 				factura.id = 2;
 
--- mostrar la factura numero 5, datos del cliente completos con id de ciudad y nombre ciudad 
--- y con id de cajero y nombre cajero que lo atendio
+-- mostrar la factura numero 5, datos del cliente completos con id de ciudad y nombre ciudad y con id de cajero y nombre cajero que lo atendio
 SELECT * 
 	FROM factura, cliente, ciudad, cajero
 		WHERE	factura.idCliente = cliente.id AND
@@ -33,8 +33,7 @@ SELECT *
 				factura.idCajero = cajero.id AND
 				factura.id = 5;
 
--- mostrar la factura numero 4, datos del cliente, nombre de la ciudad y el departamento 
--- y el nombre de los productos que compro con el nombre de la categoria ordenado por categoria 
+-- mostrar la factura numero 4, datos del cliente, nombre de la ciudad y el departamento y el nombre de los productos que compro con el nombre de la categoria ordenado por categoria 
 SELECT factura.*, cliente.*, ciudad.nombre, departamento.nombre, producto.nombre, categoria.nombre
 	FROM departamento, ciudad, cliente, factura, detalleFacturaProducto, producto, categoria
 		WHERE departamento.id = ciudad.idDepartamento AND
@@ -46,8 +45,7 @@ SELECT factura.*, cliente.*, ciudad.nombre, departamento.nombre, producto.nombre
 				factura.id=9
 				ORDER BY categoria.nombre;
 
--- Listar el nombre del pais, del departamento, de la ciuadad y del cajero de todas las facturas
--- ordenadas descendentemente por factura. ojo que los titulos se presenten de acuerdo a la tabla.
+-- Listar el nombre del pais, del departamento, de la ciuadad y del cajero de todas las facturas ordenadas descendentemente por factura. ojo que los titulos se presenten de acuerdo a la tabla.
 SELECT	pais.nombre AS pais,
 		departamento.nombre as 'departamento',
 		ciudad.nombre as ciudad,
@@ -60,8 +58,7 @@ SELECT	pais.nombre AS pais,
 				factura.idCajero = cajero.id
 		order by  factura.id desc;
 
--- mostrar la factura 2 completa con los productos vendidos, el cajero y el cliente
--- que se vendieron con categoria frutas
+-- mostrar la factura 2 completa con los productos vendidos, el cajero y el cliente que se vendieron con categoria frutas
 
 SELECT factura.*,producto.nombre,cajero.nombre,cliente.nombre,categoria.nombre
 	FROM factura,categoria,detalleFacturaProducto,producto,cajero,cliente
@@ -109,3 +106,15 @@ SELECT idCajero, count(idCajero) AS Total
     GROUP BY idCajero
     ORDER BY Total DESC
     LIMIT 1;
+
+-- Mostrar todas las facturas emitidas en el año 2023 y que tengan domicilio.
+
+-- Mostrar todas las facturas que tengan productos de categoria vegetales y tengan domicilio.
+
+-- Mostrar la factura 5 y que incluya la informacion del cliente con su ciudad y ordenar los productos por cateoria de forma descendente.
+
+-- Mostrar todas las facturas emitidas en medellin y que sus productos sean frutas ordenadas por cliente.
+
+-- Mostrar los detalles de la factura 1 y ordenar por el cliente.
+
+-- Mostrar todas las facturas que tengan productos de la categoria de frutas.
