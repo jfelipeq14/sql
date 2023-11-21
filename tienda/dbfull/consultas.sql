@@ -109,11 +109,42 @@ SELECT idCajero, count(idCajero) AS Total
 
 -- Mostrar todas las facturas emitidas en el año 2023 y que tengan domicilio.
 
--- Mostrar todas las facturas que tengan productos de categoria vegetales y tengan domicilio.
+SELECT factura.*
+	FROM factura, domicilio
+		WHERE domicilio.idFactura = factura.id
+        AND factura.fecha between "2023-01-01" and "2023-12-31";
 
--- Mostrar la factura 5 y que incluya la informacion del cliente con su ciudad y ordenar los productos por cateoria de forma descendente.
+-- Mostrar todas las facturas que tengan productos de categoria verduras y tengan domicilio.
+SELECT factura.*
+	FROM factura, domicilio, detallefacturaproducto, producto, categoria
+		WHERE domicilio.idFactura = factura.id
+        AND factura.id = detallefacturaproducto.idFactura
+        AND detallefacturaproducto.idProducto = producto.id
+        AND producto.idCategoria = categoria.id
+        AND categoria.nombre = "verduras";
+        
+-- Mostrar la factura 5 y que incluya la informacion del cliente con su ciudad y ordenar los productos por categoria de forma descendente.
+SELECT factura.*, cliente.*, ciudad.nombre AS Ciudad, producto.nombre AS Producto, categoria.nombre AS Categoria
+	FROM factura, cliente, ciudad, producto, detallefacturaproducto, categoria
+		WHERE factura.id = 5
+        AND factura.idCliente =  cliente.id
+        AND cliente.idCiudad = ciudad.id
+        AND detallefacturaproducto.idFactura = factura.id
+        AND detallefacturaproducto.idProducto = producto.id
+        AND producto.idCategoria = categoria.id
+	ORDER BY categoria.nombre DESC;
 
--- Mostrar todas las facturas emitidas en medellin y que sus productos sean frutas ordenadas por cliente.
+-- Mostrar todas las facturas emitidas en medellin, que sus productos sean frutas y la informacion este ordenada por cliente.
+SELECT factura.*,ciudad.nombre,producto.nombre,categoria.nombre,cliente.nombre
+	FROM ciudad,cliente,factura,detallefacturaproducto,producto,categoria
+		WHERE ciudad.id = cliente.idCiudad
+		AND cliente.id = factura.idCliente
+		AND factura.id = detallefacturaproducto.idFactura
+		AND detallefacturaproducto.idProducto = producto.id
+		AND producto.idCategoria = categoria.id
+		AND categoria.nombre = 'frutas'
+        AND ciudad.nombre= 'Medellin'
+	ORDER BY cliente.nombre;
 
 -- Mostrar los detalles de la factura 1 y ordenar por el cliente.
 
