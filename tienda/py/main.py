@@ -1,12 +1,12 @@
 #region atributos
-#Modulos a usar
+    #Modulos a usar
 import mysql.connector
 import config
 import querys
 #endregion
 
 #region conexion
-# Conectarse a la base de datos
+    # Conectarse a la base de datos
 connection = mysql.connector.connect(
     host=config.host,
     user=config.user,
@@ -16,7 +16,7 @@ connection = mysql.connector.connect(
 #endregion
 
 #region funciones, metodos y mas
-#Validar la conexion a la base de datos
+    #Validar la conexion a la base de datos
 if connection:
     opcion = 1
     query = ""
@@ -49,6 +49,7 @@ if connection:
             #Ejecutar la consulta
             cursor = connection.cursor()
             cursor.execute(f"{query}")
+            print(cursor.column_names)
             #Mostrar datos
             for row in cursor:
                 print(row)
