@@ -11,14 +11,16 @@ connection = mysql.connector.connect(
 )
 
 if connection:
+    cursor = connection.cursor()
     opcion = 1
+    query = ""
     while opcion != 0:
         print()
         print("¿Qué desea hacer?")
         print("1. Mostrar toda la tabla")
         print("2. Mostrar un registro")
         print("0. Salir")
-        opcion = int(input("Ingrese su opción: "))
+        opcion = int(input("Ingrese una opción: "))
         if opcion == 1:
             table = input("Digite la tabla: ")
             query = querys.getAll(table)
@@ -26,16 +28,15 @@ if connection:
             table = input("Digite la tabla: ")
             id = input("Digite el id: ")
             query = querys.getById(table, id)
-        if query:
-            # Realizar una consulta
-            cursor = connection.cursor()
+        else:
+            opcion = 0
+
+        if query != "":
             cursor.execute(f"{query}")
-            # Imprimir los resultados
-            print()
-            for row in cursor:
-                print(row)
+        for row in cursor:
+            print(row)
+        query = ""
+    # Cerrar la conexión
+    connection.close()
 else:
     print("No hay conexion con la base de datos :(")
-
-# Cerrar la conexión
-connection.close()
