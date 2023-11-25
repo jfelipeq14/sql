@@ -42,7 +42,7 @@ SELECT factura.*, cliente.*, ciudad.nombre, departamento.nombre, producto.nombre
 				factura.id  = detalleFacturaProducto.idFactura AND
 				detalleFacturaProducto.idProducto = producto.id AND
 				producto.idCategoria = categoria.id AND
-				factura.id=9
+				factura.id=4
 				ORDER BY categoria.nombre;
 
 -- Listar el nombre del pais, del departamento, de la ciuadad y del cajero de todas las facturas ordenadas descendentemente por factura. ojo que los titulos se presenten de acuerdo a la tabla.
