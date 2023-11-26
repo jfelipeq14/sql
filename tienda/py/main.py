@@ -1,8 +1,10 @@
 #region atributos
     #Modulos a usar
 import mysql.connector
+import json
 import config
 import querys
+import tables
 #endregion
 
 #region conexion
@@ -27,6 +29,7 @@ if connection:
         print("¿Qué desea hacer?")
         print("1. Mostrar toda la tabla")
         print("2. Mostrar un registro")
+        print("3. Insertar un registro")
         print("0. Salir")
         #Opcion del menu
         opcion = int(input("Ingrese una opción: "))
@@ -42,6 +45,18 @@ if connection:
             id = input("Digite el id: ")
             #Consulta a ejecutar (viene del archivo querys)
             query = querys.getById(table, id)
+        elif opcion == 3:
+            #Datos para la consulta
+            table = input("Digite la tabla: ")
+            data = tables.tableSelect(table)
+            for i in data:
+                data[i] = input(f"Digite el {i}: ")
+            #Para revisar:
+            # valores = ""
+            # for value in data.values():
+            #     valores += f"'{value}'"
+            # #Consulta a ejecutar (viene del archivo querys)
+            # query = querys.insert(table, data)
         else:
             opcion = 0
 
