@@ -153,7 +153,7 @@ SELECT factura.*,ciudad.nombre,producto.nombre,categoria.nombre,cliente.nombre
 -- Create Stored Procedure
 DELIMITER //
 CREATE PROCEDURE obtenerFacturasPorFecha(
-    IN fechaInicial int, fechaFinal int
+    IN fechaInicial date, fechaFinal date
 )
 BEGIN
     SELECT * FROM factura WHERE fecha BETWEEN fechaInicial AND fechaFinal;
