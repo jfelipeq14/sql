@@ -149,3 +149,13 @@ SELECT factura.*,ciudad.nombre,producto.nombre,categoria.nombre,cliente.nombre
 -- Mostrar los detalles de la factura 1 y ordenar por el cliente.
 
 -- Mostrar todas las facturas que tengan productos de la categoria de frutas.
+
+-- Create Stored Procedure
+DELIMITER //
+CREATE PROCEDURE obtenerFacturasPorFecha(
+    IN fechaInicial int, fechaFinal int
+)
+BEGIN
+    SELECT * FROM factura WHERE fecha BETWEEN fechaInicial AND fechaFinal;
+END //
+DELIMITER ;
