@@ -15,6 +15,9 @@ connection = mysql.connector.connect(
     password=config.password,
     database=config.database
 )
+
+# Crear un objeto cursor para ejecutar consultas
+cursor = connection.cursor()
 #endregion
 
 #region funciones, metodos y mas
@@ -22,6 +25,7 @@ connection = mysql.connector.connect(
 if connection:
     opcion = 1
     query = ""
+    data = ()
 
     while opcion != 0:
         #Menu de opciones
@@ -48,21 +52,16 @@ if connection:
         elif opcion == 3:
             #Datos para la consulta
             table = input("Digite la tabla: ")
-            data = tables.tableSelect(table)
-            for i in data:
-                data[i] = input(f"Digite el {i}: ")
-            #Para revisar:
-            # valores = ""
-            # for value in data.values():
-            #     valores += f"'{value}'"
-            # #Consulta a ejecutar (viene del archivo querys)
-            # query = querys.insert(table, data)
+            values = tables.tableSelect(table)
+            for i in values:
+                values[i] = input(f"Digite el {i}: ")
+                data += (values[i],)
+            query = querys.insert(table, data)
         else:
             opcion = 0
 
         if query != "":
             #Ejecutar la consulta
-            cursor = connection.cursor()
             cursor.execute(f"{query}")
             print(cursor.column_names)
             #Mostrar datos
@@ -70,6 +69,7 @@ if connection:
                 print(row)
         #Reinicializar variable (evita repetir la query)
         query = ""
+        data = ()
 
     # Cerrar la conexión
     connection.close()

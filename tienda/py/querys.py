@@ -9,7 +9,7 @@ def getById(table, id) :
 
 def insert(table, data):
     if table and data:
-        return(f"INSERT INTO {table} VALUES ({data})")
+        return(f"INSERT INTO {table} VALUES {data}")
 
 def update(table ,data, id):
     if table and data and id:
