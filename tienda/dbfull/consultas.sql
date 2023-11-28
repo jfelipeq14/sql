@@ -1,7 +1,7 @@
 use tienda;
 
 -- Mostrar todos los departamentos
-select * from pais;
+select * from domiciliario;
 
 -- mostra nombre de la ciudad y nombre del departamento
 SELECT ciudad.nombre, departamento.nombre 
