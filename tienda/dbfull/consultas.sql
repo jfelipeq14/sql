@@ -1,7 +1,21 @@
 use tienda;
 
+-- Create Stored Procedure
+DROP PROCEDURE IF EXISTS obtenerFacturasPorFecha;
+DELIMITER //
+CREATE PROCEDURE obtenerFacturasPorFecha(
+    IN fechaInicial date, fechaFinal date
+)
+BEGIN
+    SELECT * FROM factura WHERE fecha BETWEEN fechaInicial AND fechaFinal;
+END //
+DELIMITER ;
+
+CALL obtenerFacturasPorFecha('2023-01-01', '2023-12-31');
+
+
 -- Mostrar todos los departamentos
-select * from domiciliario;
+select * from factura;
 
 -- mostra nombre de la ciudad y nombre del departamento
 SELECT ciudad.nombre, departamento.nombre 
@@ -148,14 +162,43 @@ SELECT factura.*,ciudad.nombre,producto.nombre,categoria.nombre,cliente.nombre
 
 -- Mostrar los detalles de la factura 1 y ordenar por el cliente.
 
+
 -- Mostrar todas las facturas que tengan productos de la categoria de frutas.
 
--- Create Stored Procedure
-DELIMITER //
-CREATE PROCEDURE obtenerFacturasPorFecha(
-    IN fechaInicial date, fechaFinal date
-)
-BEGIN
-    SELECT * FROM factura WHERE fecha BETWEEN fechaInicial AND fechaFinal;
-END //
-DELIMITER ;
+-- Obtenemos el cliente, precio de una factura específica y la diferencia entre su precio y el máximo valor:
+select cliente.nombre
+	,detallefacturaproducto.precio
+    ,detallefacturaproducto.precio-(select max(precio) from detallefacturaproducto) as diferencia
+		from factura
+		inner join cliente on factura.idCliente = cliente.id
+		inner join detallefacturaproducto on detallefacturaproducto.idFactura = factura.id
+				where factura.id=1;
+
+-- Facturas de un cliente con nombre especifico
+select *
+  from factura
+  where factura.idCliente in
+   (select cliente.id
+     from cliente
+     where nombre like "%JUAN FELIPE%");
+     
+-- Mostramos el cliente, categoria y producto más costoso:
+SELECT cliente.*, categoria.nombre as categoria, producto.precio 
+	FROM cliente, factura, detallefacturaproducto,producto,categoria
+    	WHERE producto.precio=(SELECT max(precio) from producto) AND
+        	  cliente.id=factura.idCliente AND
+              factura.id=detallefacturaproducto.idFactura AND
+              detallefacturaproducto.idProducto=producto.id AND
+              categoria.id=producto.idCategoria;
+     
+-- Queremos saber el cliente y precio de la factura más costosa:
+select cliente.nombre, detallefacturaproducto.precio
+	from cliente
+    inner join factura on factura.idCliente = cliente.id
+    inner join detallefacturaproducto on detallefacturaproducto.idFactura = factura.id
+		where detallefacturaproducto.precio=(select max(precio) from detallefacturaproducto);
+        
+-- mostrar todas las facturas que haya atendido el cajero alan
+SELECT factura.*
+	from factura
+		where id = (SELECT cajero.id, cajero.nombre from cajero WHERE cajero.id = '1001011144');

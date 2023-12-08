@@ -14,3 +14,9 @@ def insert(table, data):
 def update(table ,data, id):
     if table and data and id:
         return(f"UPDATE {table} SET {data} WHERE id = {id}")
+
+def createProcedure():
+    return(f"CREATE PROCEDURE obtenerFacturasPorFecha(IN fechaInicial date, fechaFinal date) BEGIN SELECT * FROM factura WHERE fecha BETWEEN fechaInicial AND fechaFinal; END")
+
+def callProcedure(fechaInicial, fechaFinal):
+    return(f"CALL obtenerFacturasPorFecha({fechaInicial}, {fechaFinal});")
